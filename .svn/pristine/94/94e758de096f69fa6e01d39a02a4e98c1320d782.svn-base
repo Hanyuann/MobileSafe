@@ -1,0 +1,38 @@
+package cn.edu.sdu.mobilesafe.activity;
+
+import android.app.Activity;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.widget.TextView;
+import cn.edu.sdu.mobilesafe.R;
+
+public class SplashActivity extends Activity {
+
+	private TextView tv_version;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		tv_version = (TextView) findViewById(R.id.tv_version);
+		tv_version.setText("版本号:" + getVersionName());
+	}
+
+	private String getVersionName() {
+		PackageManager packageManager = getPackageManager();
+		try {
+			PackageInfo packageInfo = packageManager.getPackageInfo(
+					getPackageName(), 0);// 获取包的信息
+			String versionName = packageInfo.versionName;
+
+			return versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+}

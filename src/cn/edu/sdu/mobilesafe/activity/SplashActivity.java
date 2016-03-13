@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -25,6 +26,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.edu.sdu.mobilesafe.R;
@@ -43,6 +46,7 @@ public class SplashActivity extends Activity {
 	protected static final int CODE_JSON_ERROR = 3;
 	protected static final int CODE_ENTER_HOME = 4;
 
+	private RelativeLayout rl_root;
 	private TextView tv_version;
 	private TextView tv_progress;
 
@@ -51,6 +55,7 @@ public class SplashActivity extends Activity {
 	private String mDesc;// 更新描述
 	private String mDownloadUrl;// 下载连接
 
+	private SharedPreferences mPref;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
@@ -85,10 +90,25 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
+		rl_root = (RelativeLayout) findViewById(R.id.rl_root);
 		tv_version = (TextView) findViewById(R.id.tv_version);
 		tv_version.setText("版本号:" + getVersionName());
 		tv_progress = (TextView) findViewById(R.id.tv_progress);
-		checkVersion();
+
+		// 检查更新配置,判断是否需要自动更新
+		mPref = getSharedPreferences("config", MODE_PRIVATE);
+		boolean autoUpdate = mPref.getBoolean("auto_update", true);
+		if (autoUpdate) {
+			checkVersion();
+		} else {
+			// 延时两秒后发送消息
+			mHandler.sendEmptyMessageDelayed(CODE_ENTER_HOME, 2000);
+		}
+
+		// 渐变的动画效果
+		AlphaAnimation anim = new AlphaAnimation(0.3f, 1f);
+		anim.setDuration(2000);
+		rl_root.startAnimation(anim);
 	}
 
 	private String getVersionName() {
@@ -251,7 +271,7 @@ public class SplashActivity extends Activity {
 					intent.setDataAndType(Uri.fromFile(arg0.result),
 							"application/vnd.android.package-archive");
 					// startActivity(intent);
-					startActivityForResult(intent, 0);//如果用户取消安装会返回结果
+					startActivityForResult(intent, 0);// 如果用户取消安装会返回结果
 				}
 
 				@Override
@@ -265,8 +285,8 @@ public class SplashActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 		}
 	}
-	
-	//用户安装更新时取消调用
+
+	// 用户安装更新时取消调用
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		enterHome();

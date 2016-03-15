@@ -1,6 +1,7 @@
 package cn.edu.sdu.mobilesafe.activity;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -29,9 +30,9 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.utils.StreamUtils;
+import cn.edu.sdu.mobilesafe.utils.ToastUtils;
 
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -64,18 +65,15 @@ public class SplashActivity extends Activity {
 				showUpdateDialog();
 				break;
 			case CODE_URL_ERROR:
-				Toast.makeText(SplashActivity.this, "url错误", Toast.LENGTH_SHORT)
-						.show();
+				ToastUtils.showToast(SplashActivity.this, "url错误");
 				enterHome();
 				break;
 			case CODE_NET_ERROR:
-				Toast.makeText(SplashActivity.this, "网络错误", Toast.LENGTH_SHORT)
-						.show();
+				ToastUtils.showToast(SplashActivity.this, "网络错误");
 				enterHome();
 				break;
 			case CODE_JSON_ERROR:
-				Toast.makeText(SplashActivity.this, "数据解析错误",
-						Toast.LENGTH_SHORT).show();
+				ToastUtils.showToast(SplashActivity.this, "数据解析错误");
 				enterHome();
 				break;
 			case CODE_ENTER_HOME:
@@ -94,6 +92,8 @@ public class SplashActivity extends Activity {
 		tv_version = (TextView) findViewById(R.id.tv_version);
 		tv_version.setText("版本号:" + getVersionName());
 		tv_progress = (TextView) findViewById(R.id.tv_progress);
+
+		copyDB("address.db");// 拷贝归属地查询数据库
 
 		// 检查更新配置,判断是否需要自动更新
 		mPref = getSharedPreferences("config", MODE_PRIVATE);
@@ -244,6 +244,39 @@ public class SplashActivity extends Activity {
 		finish();
 	}
 
+	// 拷贝数据库
+	public void copyDB(String dbName) {
+		File destFile = new File(getFilesDir(), dbName);
+
+		if (destFile.exists()) {
+			
+			return;
+		}
+		
+		FileOutputStream out = null;
+		InputStream in = null;
+		try {
+			in = getAssets().open(dbName);
+			out = new FileOutputStream(destFile);
+
+			int len = 0;
+			byte[] buffer = new byte[1024];
+			while ((len = in.read(buffer)) != -1) {
+				out.write(buffer, 0, len);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 	protected void download() {
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
@@ -276,13 +309,11 @@ public class SplashActivity extends Activity {
 
 				@Override
 				public void onFailure(HttpException arg0, String arg1) {
-					Toast.makeText(SplashActivity.this, "下载失败！",
-							Toast.LENGTH_SHORT).show();
+					ToastUtils.showToast(SplashActivity.this, "下载失败！");
 				}
 			});
 		} else {
-			Toast.makeText(SplashActivity.this, "没有找到SDcard！",
-					Toast.LENGTH_SHORT).show();
+			ToastUtils.showToast(SplashActivity.this, "没有找到SDcard！");
 		}
 	}
 

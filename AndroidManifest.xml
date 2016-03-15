@@ -6,10 +6,20 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
 
     <application
         android:allowBackup="true"
@@ -32,6 +42,45 @@
         <activity android:name="cn.edu.sdu.mobilesafe.activity.Setup2Activity" />
         <activity android:name="cn.edu.sdu.mobilesafe.activity.Setup3Activity" />
         <activity android:name="cn.edu.sdu.mobilesafe.activity.Setup4Activity" />
+        <activity android:name="cn.edu.sdu.mobilesafe.activity.ContactActivity" />
+        <activity android:name="cn.edu.sdu.mobilesafe.activity.AdvanceToolsActivity" />
+        <activity android:name="cn.edu.sdu.mobilesafe.activity.AddressActivity" />
+
+        <receiver android:name="cn.edu.sdu.mobilesafe.receiver.BootCompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="cn.edu.sdu.mobilesafe.receiver.SmsReceiver" >
+            <intent-filter android:priority="2147483647" >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="cn.edu.sdu.mobilesafe.receiver.AdminReceiver"
+            android:description="@string/sample_device_admin_description"
+            android:label="@string/sample_device_admin"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_sample" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+        <!--
+        <receiver android:name="cn.edu.sdu.mobilesafe.receiver.OutCallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        -->
+
+        <service android:name="cn.edu.sdu.mobilesafe.service.LocationService" >
+        </service>
+        <service android:name="cn.edu.sdu.mobilesafe.service.AddressService" >
+        </service>
     </application>
 
 </manifest>

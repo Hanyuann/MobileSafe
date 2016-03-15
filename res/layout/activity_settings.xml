@@ -16,5 +16,12 @@
         mobilesafe:desc_off="自动更新已关闭"
         mobilesafe:desc_on="自动更新已开启"
         mobilesafe:title="自动更新设置" />
+    <cn.edu.sdu.mobilesafe.view.SettingItemView
+        android:id="@+id/siv_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        mobilesafe:desc_off="归属地显示已关闭"
+        mobilesafe:desc_on="归属地显示已开启"
+        mobilesafe:title="电话归属地显示设置" />
 
 </LinearLayout>

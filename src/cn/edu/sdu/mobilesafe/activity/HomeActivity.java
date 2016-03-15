@@ -17,9 +17,9 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.utils.MD5Utils;
+import cn.edu.sdu.mobilesafe.utils.ToastUtils;
 
 public class HomeActivity extends Activity {
 	private SharedPreferences mPref;
@@ -52,6 +52,11 @@ public class HomeActivity extends Activity {
 				case 0:
 					// 手机防盗
 					showPasswordDialog();
+					break;
+				case 7:
+					// 高级工具
+					startActivity(new Intent(HomeActivity.this,
+							AdvanceToolsActivity.class));
 					break;
 				case 8:
 					// 设置中心
@@ -103,12 +108,10 @@ public class HomeActivity extends Activity {
 						startActivity(new Intent(HomeActivity.this,
 								LostFindActivity.class));
 					} else {
-						Toast.makeText(HomeActivity.this, "密码错误！",
-								Toast.LENGTH_SHORT).show();
+						ToastUtils.showToast(HomeActivity.this, "密码错误！");
 					}
 				} else {
-					Toast.makeText(HomeActivity.this, "输入框不能为空！",
-							Toast.LENGTH_SHORT).show();
+					ToastUtils.showToast(HomeActivity.this, "输入框不能为空！");
 				}
 			}
 		});
@@ -156,12 +159,10 @@ public class HomeActivity extends Activity {
 						startActivity(new Intent(HomeActivity.this,
 								LostFindActivity.class));
 					} else {
-						Toast.makeText(HomeActivity.this, "两次输入不一致！",
-								Toast.LENGTH_SHORT).show();
+						ToastUtils.showToast(HomeActivity.this, "两次输入不一致！");
 					}
 				} else {
-					Toast.makeText(HomeActivity.this, "输入框不能为空！",
-							Toast.LENGTH_SHORT).show();
+					ToastUtils.showToast(HomeActivity.this, "输入框不能为空！");
 				}
 			}
 		});

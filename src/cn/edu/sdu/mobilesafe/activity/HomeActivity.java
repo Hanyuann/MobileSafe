@@ -53,6 +53,16 @@ public class HomeActivity extends Activity {
 					// 手机防盗
 					showPasswordDialog();
 					break;
+				case 1:
+					// 通讯卫士
+					startActivity(new Intent(HomeActivity.this,
+							CallSafeActivity.class));
+					break;
+				case 2:
+					// 软件管理
+					startActivity(new Intent(HomeActivity.this,
+							AppManagerActivity.class));
+					break;
 				case 7:
 					// 高级工具
 					startActivity(new Intent(HomeActivity.this,
@@ -197,7 +207,7 @@ public class HomeActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view = View.inflate(HomeActivity.this,
-					R.layout.home_list_item, null);
+					R.layout.list_item_home, null);
 			ImageView iv_item = (ImageView) view.findViewById(R.id.iv_item);
 			TextView tv_item = (TextView) view.findViewById(R.id.tv_item);
 

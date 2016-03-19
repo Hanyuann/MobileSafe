@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="9"
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,7 +19,16 @@
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="cn.edu.sdu.mobilesafe" >
+    </instrumentation>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
 
     <application
         android:allowBackup="true"
@@ -35,6 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <uses-library android:name="android.test.runner" />
+
         <activity android:name="cn.edu.sdu.mobilesafe.activity.HomeActivity" />
         <activity android:name="cn.edu.sdu.mobilesafe.activity.SettingsActivity" />
         <activity android:name="cn.edu.sdu.mobilesafe.activity.LostFindActivity" />
@@ -45,6 +57,12 @@
         <activity android:name="cn.edu.sdu.mobilesafe.activity.ContactActivity" />
         <activity android:name="cn.edu.sdu.mobilesafe.activity.AdvanceToolsActivity" />
         <activity android:name="cn.edu.sdu.mobilesafe.activity.AddressActivity" />
+        <activity
+            android:name="cn.edu.sdu.mobilesafe.activity.DragViewActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="cn.edu.sdu.mobilesafe.activity.CallSafeActivity" />
+        <activity android:name="cn.edu.sdu.mobilesafe.activity.CallSafeActivity2" />
+        <activity android:name="cn.edu.sdu.mobilesafe.activity.AppManagerActivity" />
 
         <receiver android:name="cn.edu.sdu.mobilesafe.receiver.BootCompleteReceiver" >
             <intent-filter>
@@ -77,10 +95,9 @@
         </receiver>
         -->
 
-        <service android:name="cn.edu.sdu.mobilesafe.service.LocationService" >
-        </service>
-        <service android:name="cn.edu.sdu.mobilesafe.service.AddressService" >
-        </service>
+        <service android:name="cn.edu.sdu.mobilesafe.service.LocationService" />
+        <service android:name="cn.edu.sdu.mobilesafe.service.AddressService" />
+        <service android:name="cn.edu.sdu.mobilesafe.service.CallSafeService" />
     </application>
 
 </manifest>

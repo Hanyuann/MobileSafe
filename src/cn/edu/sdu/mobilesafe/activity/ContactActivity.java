@@ -29,7 +29,7 @@ public class ContactActivity extends Activity {
 		readContact = readContact();
 
 		lv_list.setAdapter(new SimpleAdapter(this, readContact,
-				R.layout.contact_list_item, new String[] { "name", "phone" },
+				R.layout.list_item_contact, new String[] { "name", "phone" },
 				new int[] { R.id.tv_name, R.id.tv_phone }));
 
 		lv_list.setOnItemClickListener(new OnItemClickListener() {

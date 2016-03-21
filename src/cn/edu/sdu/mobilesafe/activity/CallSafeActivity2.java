@@ -20,7 +20,7 @@ import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.adapter.MyBaseAdapter;
 import cn.edu.sdu.mobilesafe.bean.BlackNumberInfo;
 import cn.edu.sdu.mobilesafe.db.dao.BlackNumberDao;
-import cn.edu.sdu.mobilesafe.utils.ToastUtils;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 public class CallSafeActivity2 extends Activity {
 	private ListView lv_black;
@@ -121,12 +121,12 @@ public class CallSafeActivity2 extends Activity {
 					String number = info.getNumber();
 					boolean result = dao.delete(number);
 					if (result) {
-						ToastUtils.showToast(CallSafeActivity2.this, "删除成功");
+						UIUtils.showToast(CallSafeActivity2.this, "删除成功");
 						lists.remove(info);
 						// 刷新界面
 						initData();
 					} else {
-						ToastUtils.showToast(CallSafeActivity2.this, "删除失败");
+						UIUtils.showToast(CallSafeActivity2.this, "删除失败");
 					}
 				}
 			});
@@ -167,7 +167,7 @@ public class CallSafeActivity2 extends Activity {
 	public void jump(View view) {
 		String str_page_number = et_page_number.getText().toString().trim();
 		if (TextUtils.isEmpty(str_page_number)) {
-			ToastUtils.showToast(this, "请输入正确的页码");
+			UIUtils.showToast(this, "请输入正确的页码");
 		} else {
 			int number = Integer.parseInt(str_page_number);
 			totalPage = dao.getTotalNumber() / mPageSize;
@@ -175,7 +175,7 @@ public class CallSafeActivity2 extends Activity {
 				mCurrentPageNumber = number - 1;
 				initData();
 			} else {
-				ToastUtils.showToast(this, "请输入正确的页码");
+				UIUtils.showToast(this, "请输入正确的页码");
 			}
 		}
 	}

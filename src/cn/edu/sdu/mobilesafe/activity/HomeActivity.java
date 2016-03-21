@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.utils.MD5Utils;
-import cn.edu.sdu.mobilesafe.utils.ToastUtils;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 public class HomeActivity extends Activity {
 	private SharedPreferences mPref;
@@ -62,6 +62,11 @@ public class HomeActivity extends Activity {
 					// 软件管理
 					startActivity(new Intent(HomeActivity.this,
 							AppManagerActivity.class));
+					break;
+				case 3:
+					// 进程管理
+					startActivity(new Intent(HomeActivity.this,
+							TaskManagerActivity.class));
 					break;
 				case 7:
 					// 高级工具
@@ -118,10 +123,10 @@ public class HomeActivity extends Activity {
 						startActivity(new Intent(HomeActivity.this,
 								LostFindActivity.class));
 					} else {
-						ToastUtils.showToast(HomeActivity.this, "密码错误！");
+						UIUtils.showToast(HomeActivity.this, "密码错误");
 					}
 				} else {
-					ToastUtils.showToast(HomeActivity.this, "输入框不能为空！");
+					UIUtils.showToast(HomeActivity.this, "输入框不能为空");
 				}
 			}
 		});
@@ -169,10 +174,10 @@ public class HomeActivity extends Activity {
 						startActivity(new Intent(HomeActivity.this,
 								LostFindActivity.class));
 					} else {
-						ToastUtils.showToast(HomeActivity.this, "两次输入不一致！");
+						UIUtils.showToast(HomeActivity.this, "两次输入不一致");
 					}
 				} else {
-					ToastUtils.showToast(HomeActivity.this, "输入框不能为空！");
+					UIUtils.showToast(HomeActivity.this, "输入框不能为空");
 				}
 			}
 		});

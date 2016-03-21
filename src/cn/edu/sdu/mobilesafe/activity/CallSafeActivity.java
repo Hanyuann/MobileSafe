@@ -23,7 +23,7 @@ import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.adapter.MyBaseAdapter;
 import cn.edu.sdu.mobilesafe.bean.BlackNumberInfo;
 import cn.edu.sdu.mobilesafe.db.dao.BlackNumberDao;
-import cn.edu.sdu.mobilesafe.utils.ToastUtils;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 public class CallSafeActivity extends Activity {
 
@@ -119,7 +119,7 @@ public class CallSafeActivity extends Activity {
 			public void onClick(View v) {
 				String str_number = et_number.getText().toString().trim();
 				if (TextUtils.isEmpty(str_number)) {
-					ToastUtils.showToast(CallSafeActivity.this, "请输入黑名单号码");
+					UIUtils.showToast(CallSafeActivity.this, "请输入黑名单号码");
 					return;
 				}
 
@@ -132,7 +132,7 @@ public class CallSafeActivity extends Activity {
 				} else if (cb_sms.isChecked()) {
 					mode = "3";
 				} else {
-					ToastUtils.showToast(CallSafeActivity.this, "请勾选拦截模式");
+					UIUtils.showToast(CallSafeActivity.this, "请勾选拦截模式");
 					return;
 				}
 				BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
@@ -189,7 +189,7 @@ public class CallSafeActivity extends Activity {
 						// 加载更多的数据, 更改加载数据的开始位置
 						mStartIndex += maxCount;
 						if (mStartIndex >= totalNumber) {
-							ToastUtils.showToast(CallSafeActivity.this,
+							UIUtils.showToast(CallSafeActivity.this,
 									"没有更多的数据了");
 							return;
 						}
@@ -248,12 +248,12 @@ public class CallSafeActivity extends Activity {
 					String number = info.getNumber();
 					boolean result = dao.delete(number);
 					if (result) {
-						ToastUtils.showToast(CallSafeActivity.this, "删除成功");
+						UIUtils.showToast(CallSafeActivity.this, "删除成功");
 						lists.remove(info);
 						// 刷新界面
 						initData();
 					} else {
-						ToastUtils.showToast(CallSafeActivity.this, "删除失败");
+						UIUtils.showToast(CallSafeActivity.this, "删除失败");
 					}
 				}
 			});

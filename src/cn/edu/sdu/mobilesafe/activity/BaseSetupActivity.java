@@ -8,7 +8,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-import cn.edu.sdu.mobilesafe.utils.ToastUtils;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 //设置引导页父类,不需要在清单文件中注册,因为不需要界面展示
 public abstract class BaseSetupActivity extends Activity {
@@ -29,11 +29,11 @@ public abstract class BaseSetupActivity extends Activity {
 					float velocityX, float velocityY) {
 				// 判断纵向滑动幅度是否过大,过大的话不允许切换界面
 				if (Math.abs(e2.getRawY() - e1.getRawY()) > 100) {
-					ToastUtils.showToast(BaseSetupActivity.this, "不能这样滑哦！");
+					UIUtils.showToast(BaseSetupActivity.this, "不能这样滑哦！");
 					return true;
 				}
 				if (Math.abs(velocityX) < 150) {
-					ToastUtils.showToast(BaseSetupActivity.this, "滑的太慢了！");
+					UIUtils.showToast(BaseSetupActivity.this, "滑的太慢了！");
 					return true;
 				}
 

@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.utils.StreamUtils;
-import cn.edu.sdu.mobilesafe.utils.ToastUtils;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -65,15 +65,15 @@ public class SplashActivity extends Activity {
 				showUpdateDialog();
 				break;
 			case CODE_URL_ERROR:
-				ToastUtils.showToast(SplashActivity.this, "url错误");
+				UIUtils.showToast(SplashActivity.this, "url错误");
 				enterHome();
 				break;
 			case CODE_NET_ERROR:
-				ToastUtils.showToast(SplashActivity.this, "网络错误");
+				UIUtils.showToast(SplashActivity.this, "网络错误");
 				enterHome();
 				break;
 			case CODE_JSON_ERROR:
-				ToastUtils.showToast(SplashActivity.this, "数据解析错误");
+				UIUtils.showToast(SplashActivity.this, "数据解析错误");
 				enterHome();
 				break;
 			case CODE_ENTER_HOME:
@@ -309,11 +309,11 @@ public class SplashActivity extends Activity {
 
 				@Override
 				public void onFailure(HttpException arg0, String arg1) {
-					ToastUtils.showToast(SplashActivity.this, "下载失败！");
+					UIUtils.showToast(SplashActivity.this, "下载失败！");
 				}
 			});
 		} else {
-			ToastUtils.showToast(SplashActivity.this, "没有找到SDcard！");
+			UIUtils.showToast(SplashActivity.this, "没有找到SDcard！");
 		}
 	}
 

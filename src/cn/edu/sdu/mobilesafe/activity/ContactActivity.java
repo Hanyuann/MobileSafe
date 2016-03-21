@@ -38,8 +38,10 @@ public class ContactActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				String phone = readContact.get(position).get("phone");// 读取当前Item的电话号码
+				String name = readContact.get(position).get("name");// 读取当前Item的电话号码
 				Intent intent = new Intent();
 				intent.putExtra("phone", phone);
+				intent.putExtra("name", name);
 				setResult(Activity.RESULT_OK, intent);
 				finish();// 将数据放在intent中返回给上一个页面
 			}

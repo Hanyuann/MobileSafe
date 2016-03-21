@@ -21,6 +21,7 @@ import com.android.internal.telephony.ITelephony;
 public class CallSafeService extends Service {
 
 	private BlackNumberDao dao;
+	private InnerReceiver innerReceiver;
 
 	public CallSafeService() {
 	}
@@ -41,8 +42,7 @@ public class CallSafeService extends Service {
 		MyPhoneStateListener listener = new MyPhoneStateListener();
 		tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
 
-		// 初始化短信的广播
-		InnerReceiver innerReceiver = new InnerReceiver();
+		innerReceiver = new InnerReceiver();
 		IntentFilter intentFilter = new IntentFilter(
 				"android.provider.Telephony.SMS_RECEIVED");
 		intentFilter.setPriority(Integer.MAX_VALUE);
@@ -57,6 +57,8 @@ public class CallSafeService extends Service {
 			case TelephonyManager.CALL_STATE_RINGING:
 				String mode = dao.findNumber(incomingNumber);
 				if (mode.equals("1") || mode.equals("2")) {
+					// 挂断电话
+					endCall();
 					Uri uri = Uri.parse("content://call_log/calls");
 					getContentResolver()
 							.registerContentObserver(
@@ -64,8 +66,6 @@ public class CallSafeService extends Service {
 									true,
 									new MyContentObserver(new Handler(),
 											incomingNumber));
-					// 挂断电话
-					endCall();
 				}
 				break;
 			}
@@ -122,6 +122,7 @@ public class CallSafeService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		unregisterReceiver(innerReceiver);
 	}
 
 	// 删除通话记录

@@ -18,7 +18,7 @@ public class TestDb extends AndroidTestCase {
 	public void testAdd() {
 		BlackNumberDao dao = new BlackNumberDao(mContext);
 		Random random = new Random();
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 40; i++) {
 			Long number = 13300000000l + i;
 			dao.add(number + "", String.valueOf(random.nextInt(3) + 1));
 		}

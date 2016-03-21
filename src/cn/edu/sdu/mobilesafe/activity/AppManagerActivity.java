@@ -31,6 +31,7 @@ import android.widget.TextView;
 import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.bean.AppInfo;
 import cn.edu.sdu.mobilesafe.engine.AppInfos;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -54,12 +55,15 @@ public class AppManagerActivity extends Activity implements
 	private PopupWindow popupWindow;
 	private AppInfo clickAppInfo;
 
+	private AppManagerAdapter adapter;
 	private Handler handler = new Handler() {
+
 		public void handleMessage(android.os.Message msg) {
-			AppManagerAdapter adapter = new AppManagerAdapter();
+			adapter = new AppManagerAdapter();
 			lv_software.setAdapter(adapter);
 		};
 	};
+	private UninstallReceiver receiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +110,7 @@ public class AppManagerActivity extends Activity implements
 		tv_sdcard.setText("SD卡可用"
 				+ Formatter.formatFileSize(this, sd_freeSpace));
 
-		UninstallReceiver receiver = new UninstallReceiver();
+		receiver = new UninstallReceiver();
 		IntentFilter intentFilter = new IntentFilter(
 				Intent.ACTION_PACKAGE_REMOVED);
 		intentFilter.addDataScheme("package");
@@ -307,7 +311,8 @@ public class AppManagerActivity extends Activity implements
 	@Override
 	protected void onDestroy() {
 		popupWindowDismiss();
-
+		unregisterReceiver(receiver);
+		receiver = null;
 		super.onDestroy();
 	}
 
@@ -346,6 +351,11 @@ public class AppManagerActivity extends Activity implements
 					"android.intent.action.DELETE", Uri.parse("package:" +
 
 					clickAppInfo.getApkPackageName()));
+			if (clickAppInfo.isUserApp()) {
+				userAppInfos.remove(clickAppInfo);
+			} else {
+				systemAppInfos.remove(clickAppInfo);
+			}
 			startActivityForResult(uninstall_localIntent, 0);
 			popupWindowDismiss();
 			break;
@@ -355,15 +365,14 @@ public class AppManagerActivity extends Activity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		initUI();
-		initData();
+		adapter.notifyDataSetChanged();
 	}
 
 	private class UninstallReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			System.out.println("接收到卸载的广播");
+			UIUtils.showToast(AppManagerActivity.this, "卸载完成");
 		}
 	}
 

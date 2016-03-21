@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import cn.edu.sdu.mobilesafe.R;
-import cn.edu.sdu.mobilesafe.utils.ToastUtils;
+import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 public class Setup3Activity extends BaseSetupActivity {
 	private EditText et_phone;
@@ -36,7 +36,7 @@ public class Setup3Activity extends BaseSetupActivity {
 	public void showNextPage() {
 		String phone = et_phone.getText().toString().trim();
 		if (TextUtils.isEmpty(phone)) {
-			ToastUtils.showToast(this, "安全号码不能为空！");
+			UIUtils.showToast(this, "安全号码不能为空！");
 			return;
 		}
 

@@ -8,6 +8,7 @@ import android.test.AndroidTestCase;
 import cn.edu.sdu.mobilesafe.bean.BlackNumberInfo;
 import cn.edu.sdu.mobilesafe.db.dao.BlackNumberDao;
 
+//≤‚ ‘ ˝æ›ø‚
 public class TestDb extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {

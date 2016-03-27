@@ -30,7 +30,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.edu.sdu.mobilesafe.R;
 import cn.edu.sdu.mobilesafe.bean.AppInfo;
-import cn.edu.sdu.mobilesafe.engine.AppInfos;
+import cn.edu.sdu.mobilesafe.engine.AppInfoParser;
 import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
 import com.lidroid.xutils.ViewUtils;
@@ -76,7 +76,7 @@ public class AppManagerActivity extends Activity implements
 	private void initData() {
 		new Thread() {
 			public void run() {
-				appInfos = AppInfos.getAppInfos(AppManagerActivity.this);
+				appInfos = AppInfoParser.getAppInfos(AppManagerActivity.this);
 				// appInfos拆成 用户程序的集合 + 系统程序的集合
 
 				// 用户程序的集合
@@ -351,11 +351,7 @@ public class AppManagerActivity extends Activity implements
 					"android.intent.action.DELETE", Uri.parse("package:" +
 
 					clickAppInfo.getApkPackageName()));
-			if (clickAppInfo.isUserApp()) {
-				userAppInfos.remove(clickAppInfo);
-			} else {
-				systemAppInfos.remove(clickAppInfo);
-			}
+
 			startActivityForResult(uninstall_localIntent, 0);
 			popupWindowDismiss();
 			break;
@@ -365,6 +361,14 @@ public class AppManagerActivity extends Activity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_CANCELED) {
+		}else{
+			if (clickAppInfo.isUserApp()) {
+				userAppInfos.remove(clickAppInfo);
+			} else {
+				systemAppInfos.remove(clickAppInfo);
+			}
+		}
 		adapter.notifyDataSetChanged();
 	}
 

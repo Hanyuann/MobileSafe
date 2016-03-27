@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import net.youmi.android.AdManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,13 +33,17 @@ import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.edu.sdu.mobilesafe.R;
+import cn.edu.sdu.mobilesafe.bean.Virus;
+import cn.edu.sdu.mobilesafe.db.dao.VirusDao;
 import cn.edu.sdu.mobilesafe.utils.StreamUtils;
 import cn.edu.sdu.mobilesafe.utils.UIUtils;
 
+import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
 public class SplashActivity extends Activity {
 
@@ -88,12 +94,19 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
+		// 设置有米广告
+		AdManager.getInstance(this).init("b21e6d4d676ad3b3",
+				"650dcbb136e035c1", false);
+
 		rl_root = (RelativeLayout) findViewById(R.id.rl_root);
 		tv_version = (TextView) findViewById(R.id.tv_version);
 		tv_version.setText("版本号:" + getVersionName());
 		tv_progress = (TextView) findViewById(R.id.tv_progress);
 
 		copyDB("address.db");// 拷贝归属地查询数据库
+		copyDB("antivirus.db");// 拷贝病毒数据库
+		// 更新病毒数据库
+		// updateVirus();
 
 		// 检查更新配置,判断是否需要自动更新
 		mPref = getSharedPreferences("config", MODE_PRIVATE);
@@ -109,6 +122,36 @@ public class SplashActivity extends Activity {
 		AlphaAnimation anim = new AlphaAnimation(0.3f, 1f);
 		anim.setDuration(2000);
 		rl_root.startAnimation(anim);
+	}
+
+	// 更新病毒库
+	private void updateVirus() {
+		final VirusDao dao = new VirusDao();
+
+		// 联网从服务器获取到最新的MD5特征码
+		HttpUtils httpUtils = new HttpUtils();
+		String url = "http://10.0.2.2:8080/virus.json";
+		httpUtils.send(HttpMethod.GET, url, new RequestCallBack<String>() {
+
+			@Override
+			public void onFailure(HttpException arg0, String arg1) {
+			}
+
+			@Override
+			public void onSuccess(ResponseInfo<String> arg0) {
+				try {
+					// JSONObject jsonObject = new JSONObject(arg0.result);
+					// String md5 = jsonObject.getString("md5");
+					// String desc = jsonObject.getString("desc");
+					Gson gson = new Gson();
+					Virus virus = gson.fromJson(arg0.result, Virus.class);
+					dao.addVirus(virus.md5, virus.desc);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
 	}
 
 	private String getVersionName() {
@@ -249,10 +292,10 @@ public class SplashActivity extends Activity {
 		File destFile = new File(getFilesDir(), dbName);
 
 		if (destFile.exists()) {
-			
+
 			return;
 		}
-		
+
 		FileOutputStream out = null;
 		InputStream in = null;
 		try {

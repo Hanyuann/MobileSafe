@@ -1,7 +1,10 @@
 package cn.edu.sdu.mobilesafe.activity;
 
+import net.youmi.android.listener.Interface_ActivityListener;
+import net.youmi.android.offers.OffersManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -97,5 +100,23 @@ public class AdvanceToolsActivity extends Activity {
 			UIUtils.showToast(this, "成功创建快捷方式");
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	// 程序锁
+	public void appLock(View v) {
+		Intent intent = new Intent(this, AppLockActivity.class);
+		startActivity(intent);
+	}
+
+	// 软件推荐
+	public void appPush(View v) {
+		OffersManager.getInstance(this).showOffersWall(
+				new Interface_ActivityListener() {
+					@Override
+					public void onActivityDestroy(Context context) {
+						UIUtils.showToast(AdvanceToolsActivity.this,
+								"赚取更多优惠，尽在积分墙");
+					}
+				});
 	}
 }

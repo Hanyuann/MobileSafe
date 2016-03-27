@@ -2,5 +2,6 @@
 <resources>
 
     <color name="black">#000</color>
+    <color name="textColorPrimaryDark">#ff000000</color>
 
 </resources>

@@ -9,6 +9,15 @@ public class AppInfo {
 	private boolean isUserApp;
 	private boolean isRom;// ´æ´¢µÄÎ»ÖÃ
 	private String apkPackageName;
+	private int uid;
+
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
 
 	public Drawable getIcon() {
 		return icon;
@@ -62,6 +71,7 @@ public class AppInfo {
 	public String toString() {
 		return "AppInfo [icon=" + icon + ", apkName=" + apkName + ", apkSize="
 				+ apkSize + ", isUserApp=" + isUserApp + ", isRom=" + isRom
-				+ ", apkPackageName=" + apkPackageName + "]";
+				+ ", apkPackageName=" + apkPackageName + ", uid=" + uid + "]";
 	}
+
 }

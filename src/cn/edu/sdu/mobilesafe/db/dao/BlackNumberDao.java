@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.SystemClock;
 import cn.edu.sdu.mobilesafe.bean.BlackNumberInfo;
+import cn.edu.sdu.mobilesafe.db.BlackNumberOpenHelper;
 
 public class BlackNumberDao {
 	private BlackNumberOpenHelper helper;
